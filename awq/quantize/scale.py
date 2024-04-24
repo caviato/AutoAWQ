@@ -120,7 +120,8 @@ def scale_fc_fc(fc1: nn.Linear, fc2: nn.Linear, scales: torch.Tensor):
 
     fc1.weight[-scales.size(0) :].div_(scales.view(-1, 1))
     if fc1.bias is not None:
-        fc1.bias.div_(scales.view(-1))
+    #    fc1.bias.div_(scales.view(-1))
+        fc1.bias[-scales.size(0) :].div_(scales.view(-1))
 
     fc2.weight.mul_(scales.view(1, -1))
 
@@ -139,7 +140,8 @@ def scale_fc_fcs(fc1: nn.Linear, fcs: List[nn.Linear], scales: torch.Tensor):
 
     fc1.weight[-scales.size(0) :].div_(scales.view(-1, 1))
     if fc1.bias is not None:
-        fc1.bias.div_(scales.view(-1))
+    #    fc1.bias.div_(scales.view(-1))
+        fc1.bias[-scales.size(0) :].div_(scales.view(-1))
 
     for fc in fcs:
         fc.weight.mul_(scales.view(1, -1))

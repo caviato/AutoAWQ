@@ -485,6 +485,9 @@ class AwqQuantizer:
 
         # Update the layer kwargs with `prepare_inputs_for_generation` method
         # that takes care of everything to avoid unexpected errors.
+        batch_size = samples.shape(0)
+        layer_kwargs["attention_mask"] = torch.zeros(batch_size, 512) # MOD
+        layer_kwargs["attention_mask"][:, -1] = 1
         layer_kwargs = self.model.prepare_inputs_for_generation(samples, **layer_kwargs)
         # Pop the input_ids as they are not needed at all.
         layer_kwargs.pop("input_ids")
